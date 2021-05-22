@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}
+  labels:
+    {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
+spec:
+  {{- if not .Values.admin.autoscaling.enabled }}
+  replicas: {{ .Values.admin.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "identityserver4admin.selectorLabelsAdmin" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.admin.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "identityserver4admin.selectorLabelsAdmin" . | nindent 8 }}
+    spec:
+      {{- with .Values.admin.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "identityserver4admin.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.admin.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-admin
+          securityContext:
+            {{- toYaml .Values.admin.securityContext | nindent 12 }}
+          image: "{{ .Values.admin.image.repository }}:{{ .Values.admin.image.tag | default .Chart.AppVersion }}"
+          command: [ "dotnet", "Skoruba.IdentityServer4.Admin.dll", "/seed" ]
+          imagePullPolicy: {{ .Values.admin.image.pullPolicy }}
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+            - name: ConnectionStrings__ConfigurationDbConnection
+              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
+            - name: ConnectionStrings__PersistedGrantDbConnection
+              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
+            - name: ConnectionStrings__IdentityDbConnection
+              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
+            - name: ConnectionStrings__AdminLogDbConnection
+              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
+            - name: ConnectionStrings__AdminAuditLogDbConnection
+              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
+            - name: ConnectionStrings__DataProtectionDbConnection
+              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
+            - name: AdminConfiguration__IdentityAdminBaseUrl
+              value: http://login-admin.k8s.local
+            - name: AdminConfiguration__IdentityAdminRedirectUri
+              value: http://login-admin.k8s.local/signin-oidc
+            - name: AdminConfiguration__IdentityServerBaseUrl
+              value: http://login.k8s.local
+            - name: AdminConfiguration__RequireHttpsMetadata
+              value: "false"
+            - name: IdentityServerData__Clients__0__ClientUri
+              value: http://login-admin.k8s.local
+            - name: IdentityServerData__Clients__0__RedirectUris__0
+              value: http://login-admin.k8s.local/signin-oidc
+            - name: IdentityServerData__Clients__0__FrontChannelLogoutUri
+              value: http://login-admin.k8s.local/signin-oidc
+            - name: IdentityServerData__Clients__0__PostLogoutRedirectUris__0
+              value: http://login-admin.k8s.local/signout-callback-oidc
+            - name: IdentityServerData__Clients__0__AllowedCorsOrigins__0
+              value: http://login-admin.k8s.local
+            - name: IdentityServerData__Clients__1__RedirectUris__0
+              value: http://login-api.k8s.local/swagger/oauth2-redirect.html
+            # - name: Serilog__WriteTo__1__Args__connectionString
+            #   value: Server=sqlserver;Database=IdentityServer4Admin;User Id=sa;Password=Password_123;MultipleActiveResultSets=true
+            - name: Serilog__MinimumLevel__Default
+              value: Debug
+          volumeMounts:
+          - name: "config"
+            mountPath: "/app/appsettings.json"
+            subPath: "appsettings.json"
+          - name: "identity-data"
+            mountPath: "/app/identitydata.json"
+            subPath: "identitydata.json"
+          - name: "identity-serverdata"
+            mountPath: "/app/identityserverdata.json"
+            subPath: "identityserverdata.json"
+          # - name: "serilog"
+          #   mountPath: "/app/serilog.json"
+          #   subPath: "serilog.json"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.admin.resources | nindent 12 }}
+      # dnsPolicy: ClusterFirstWithHostNet
+      volumes:
+        - name: "config"
+          configMap:
+            name: "{{ include "identityserver4admin.fullname" . }}-admin-app-settings"
+        - name: "identity-data"
+          configMap:
+            name: "{{ include "identityserver4admin.fullname" . }}-identity-data"
+        - name: "identity-serverdata"
+          configMap:
+            name: "{{ include "identityserver4admin.fullname" . }}-identity-serverdata"
+        # - name: "serilog"
+        #   configMap:
+        #     name: "{{ include "identityserver4admin.fullname" . }}-serilog"
+      {{- with .Values.admin.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.admin.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.admin.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

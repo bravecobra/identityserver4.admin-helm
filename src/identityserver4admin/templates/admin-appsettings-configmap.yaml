@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}-admin-app-settings
+  labels:
+    {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
+data:
+  appsettings.json: |
+{{.Files.Get "config/admin-appsettings.json" | printf "%s" | indent 4}}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}-identity-app-settings
+  labels:
+    {{- include "identityserver4admin.labelsIdentity" . | nindent 4 }}
+data:
+  appsettings.json: |
+{{.Files.Get "config/identity-appsettings.json" | printf "%s" | indent 4}}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}-identity-data
+  labels:
+    {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
+data:
+  identitydata.json: |
+{{.Files.Get "config/identitydata.json" | printf "%s" | indent 4}}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}-identity-serverdata
+  labels:
+    {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
+data:
+  identityserverdata.json: |
+{{.Files.Get "config/identityserverdata.json" | printf "%s" | indent 4}}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}-serilog
+  labels:
+    {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
+data:
+  serilog.json: |
+{{.Files.Get "config/serilog.json" | printf "%s" | indent 4}}

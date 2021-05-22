@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}-admin
+  labels:
+    {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
+spec:
+  type: {{ .Values.admin.service.type }}
+  ports:
+    - port: {{ .Values.admin.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "identityserver4admin.selectorLabelsAdmin" . | nindent 4 }}
