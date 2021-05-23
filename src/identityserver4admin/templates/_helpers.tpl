@@ -91,13 +91,24 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Create the name of the service account to use for admin
 */}}
-{{- define "identityserver4admin.serviceAccountName" -}}
+{{- define "identityserver4admin.serviceAccountNameAdmin" -}}
 {{- if .Values.admin.serviceAccount.create }}
-{{- default (include "identityserver4admin.fullname" .) .Values.admin.serviceAccount.name }}
+{{- default (include "identityserver4admin.fullname" .) .Values.admin.serviceAccount.name }}-admin
 {{- else }}
 {{- default "default" .Values.admin.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use for identity
+*/}}
+{{- define "identityserver4admin.serviceAccountNameIdentity" -}}
+{{- if .Values.identity.serviceAccount.create }}
+{{- default (include "identityserver4admin.fullname" .) .Values.identity.serviceAccount.name }}-identity
+{{- else }}
+{{- default "default" .Values.identity.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
