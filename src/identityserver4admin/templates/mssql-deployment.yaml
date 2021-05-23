@@ -43,6 +43,13 @@ spec:
               secretKeyRef:
                name: mssql-secret
                key: {{  template "mssql.sapassword" . }}
+          {{ if .Values.mssql.resources.limits.memory }}
+           - name: MSSQL_MEMORY_LIMIT_MB
+             valueFrom:
+               resourceFieldRef:
+                 resource: limits.memory
+                 divisor: 1Mi
+          {{ end }}
           volumeMounts:
            - name: mssqldb
              mountPath: /var/opt/mssql
@@ -54,6 +61,8 @@ spec:
              mountPath: /var/opt/mssql/tempdb
            - name: mssql-config-volume
              mountPath: /var/opt/config
+          resources:
+{{ toYaml .Values.mssql.resources | indent 12 }}
       volumes:
        - name: mssqldb
          persistentVolumeClaim:
