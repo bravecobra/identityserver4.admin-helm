@@ -1,0 +1,23 @@
+name: release-chart
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  release-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: src
+          charts_url: https://bravecobra.github.io/identityserver4.admin-helm/
+          owner: bravecobra
+          repository: charts
+          branch: gh-pages
+          target_dir: charts
+          commit_username: bravecobra
+          commit_email: bravecobra@gmail.com
