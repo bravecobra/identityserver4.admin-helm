@@ -107,3 +107,10 @@ Create the name for the SA password secret key.
 {{- define "mssql.sapassword" -}}
   sa_password
 {{- end -}}
+
+{{/*
+Create the name for the mssql service
+*/}}
+{{- define "mssql.serviceName" -}}
+{{ include "identityserver4admin.name" . }}-mssql
+{{- end -}}

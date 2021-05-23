@@ -2,6 +2,12 @@
 
 ## Installation
 
+```powerhshell
+helm upgrade --install identityserver4 .\identityserver4admin\ --values .\identityserver-values.yaml
+```
+
+## Configuration
+
 ### Traefik routes
 
 ```yaml
@@ -14,11 +20,11 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`login-admin.k8s.local`) && PathPrefix(`/`)
+    - match: Host(`admin.login.k8s.local`) && PathPrefix(`/`)
       kind: Rule
       namespace: default
       services:
-      - name: identityserver4-identityserver4admin-admin
+      - name: identityserver4-admin
         port: 80
         path: /
         passHostHeader: true
@@ -38,7 +44,7 @@ spec:
       kind: Rule
       namespace: default
       services:
-      - name: identityserver4-identityserver4admin-identity
+      - name: identityserver4-identity
         port: 80
         path: /
         passHostHeader: true
@@ -54,10 +60,8 @@ spec:
     health {
        lameduck 5s
     }
-    rewrite stop {
-       name regex (.*)\.k8s\.local\.$ {1}.default.svc.cluster.local
-       answer name (.*)\.default\.svc\.cluster\.local\.$ {1}.k8s.local
-    }
+    rewrite name login.k8s.local identityserver4-identity.default.svc.cluster.local
+    rewrite name admin.login.k8s.local identityserver4-admin.default.svc.cluster.local
     ready
     kubernetes cluster.local in-addr.arpa ip6.arpa {
        pods insecure

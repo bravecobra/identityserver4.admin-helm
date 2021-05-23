@@ -1,11 +1,11 @@
 {
     "ConnectionStrings": {
-        "ConfigurationDbConnection": "Server=(localdb)\\mssqllocaldb;Database=IdentityServer4Admin;Trusted_Connection=True;MultipleActiveResultSets=true",
-        "PersistedGrantDbConnection": "Server=(localdb)\\mssqllocaldb;Database=IdentityServer4Admin;Trusted_Connection=True;MultipleActiveResultSets=true",
-        "IdentityDbConnection": "Server=(localdb)\\mssqllocaldb;Database=IdentityServer4Admin;Trusted_Connection=True;MultipleActiveResultSets=true",
-        "AdminLogDbConnection": "Server=(localdb)\\mssqllocaldb;Database=IdentityServer4Admin;Trusted_Connection=True;MultipleActiveResultSets=true",
-        "AdminAuditLogDbConnection": "Server=(localdb)\\mssqllocaldb;Database=IdentityServer4Admin;Trusted_Connection=True;MultipleActiveResultSets=true",
-        "DataProtectionDbConnection": "Server=(localdb)\\mssqllocaldb;Database=IdentityServer4Admin;Trusted_Connection=True;MultipleActiveResultSets=true"
+        "ConfigurationDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
+        "PersistedGrantDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
+        "IdentityDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
+        "AdminLogDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
+        "AdminAuditLogDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
+        "DataProtectionDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true"
     },
     "SeedConfiguration": {
         "ApplySeed": true
@@ -19,11 +19,12 @@
     "AdminConfiguration": {
         "PageTitle": "Skoruba IdentityServer4 Admin",
         "FaviconUri": "~/favicon.ico",
-        "IdentityAdminRedirectUri": "https://localhost:44303/signin-oidc",
-        "IdentityServerBaseUrl": "https://localhost:44310",
+        "IdentityAdminRedirectUri": "{{ .Values.admin.protocol }}://{{ .Values.admin.domainName }}/signin-oidc",
+        "IdentityServerBaseUrl": "{{ .Values.identity.protocol }}://{{ .Values.identity.domainName }}",
+        "IdentityAdminBaseUrl": "{{ .Values.admin.protocol }}://{{ .Values.admin.domainName }}",
         "IdentityAdminCookieName": "IdentityServerAdmin",
         "IdentityAdminCookieExpiresUtcHours": 12,
-        "RequireHttpsMetadata": false,
+        "RequireHttpsMetadata": "{{ .Values.admin.requireHttpsMetadata}}",
         "TokenValidationClaimName": "name",
         "TokenValidationClaimRole": "role",
         "ClientId": "skoruba_identity_admin",

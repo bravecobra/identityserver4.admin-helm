@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identityserver4admin.fullname" . }}-serilog
+  labels:
+    {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
+data:
+  serilog.json: |
+{{ tpl (.Files.Get "config/serilog.json") . | printf "%s" | indent 4}}

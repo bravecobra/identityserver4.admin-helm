@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "identityserver4admin.fullname" . }}-admin
+  name: {{ .Release.Name }}-admin
   labels:
     {{- include "identityserver4admin.labelsAdmin" . | nindent 4 }}
 spec:

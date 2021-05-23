@@ -36,24 +36,15 @@ spec:
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: Development
-            - name: ConnectionStrings__ConfigurationDbConnection
-              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
-            - name: ConnectionStrings__PersistedGrantDbConnection
-              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
-            - name: ConnectionStrings__IdentityDbConnection
-              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
-            - name: ConnectionStrings__DataProtectionDbConnection
-              value: Server={{ include "identityserver4admin.fullname" . }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true
-            - name: AdminConfiguration__IdentityAdminBaseUrl
-              value: http://login-admin.k8s.local
-            - name: AdvancedConfiguration__IssuerUri
-              value : http://login.k8s.local
             - name: Serilog__MinimumLevel__Default
-              value: Information
+              value: Debug
           volumeMounts:
           - name: "config"
             mountPath: "/app/appsettings.json"
             subPath: "appsettings.json"
+          - name: "serilog"
+            mountPath: "/app/serilog.json"
+            subPath: "serilog.json"
           ports:
             - name: http
               containerPort: 80
@@ -68,11 +59,14 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.identity.resources | nindent 12 }}
-      # dnsPolicy: ClusterFirstWithHostNet
+      dnsPolicy: ClusterFirstWithHostNet
       volumes:
         - name: "config"
           configMap:
             name: "{{ include "identityserver4admin.fullname" . }}-identity-app-settings"
+        - name: "serilog"
+          configMap:
+            name: "{{ include "identityserver4admin.fullname" . }}-serilog"
       {{- with .Values.identity.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
