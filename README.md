@@ -21,7 +21,7 @@ helm repo add identityserver4admin https://bravecobra.github.io/identityserver4.
 helm repo update
 ```
 
-Create a `identityserver-values.yaml` file to override any default values, specific to your installation. The default values can be found in [values.yaml](./src/identity4admin/values.yaml)
+Create a `identityserver-values.yaml` file to override any default values, specific to your installation. The default values can be found in [values.yaml](./src/identityserver4admin/values.yaml)
 
 Then install the `helm` chart
 
