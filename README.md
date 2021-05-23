@@ -1,14 +1,43 @@
 # Helm chart for IdentityServer4.Admin
 
+## Description
+
+This helm chart will deploy [IdentityServer4.Admin](https://github.com/skoruba/IdentityServer4.Admin) onto your k8s cluster in the `default` namerspace.
+
+Deployed components:
+
+- Admin
+- STS.Identity
+- MSSQL instance
+
+> Note: Currently there is no support for TLS, external database services or namespaces. The API service is also missing at the moment.
+
 ## Installation
 
+Add the helm repo
+
+```bash
+helm repo add identityserver4admin https://bravecobra.github.io/identityserver4.admin-helm/charts/
+helm repo update
+```
+
+Create a `identityserver-values.yaml` file to override any default values, specific to your installation. The default values can be found in [values.yaml](./src/identity4admin/values.yaml)
+
+Then install the `helm` chart
+
 ```powerhshell
-helm upgrade --install identityserver4 .\identityserver4admin\ --values .\identityserver-values.yaml
+helm upgrade --install identityserver4 identityserver4admin/identityserver4admin --values .\identityserver-values.yaml
 ```
 
 ## Configuration
 
+Apart from specifying overrides of the `values.yml`, there are 2 more things that need to be addressed.
+
 ### Traefik routes
+
+First you want your ingress controller to have the domains you specified for the services to be forwarded to those services that were created.
+
+In `Traefik` that would be something like the following.
 
 ```yaml
 apiVersion: traefik.containo.us/v1alpha1
@@ -28,8 +57,6 @@ spec:
         port: 80
         path: /
         passHostHeader: true
-        # tls:
-        #   - secretName: traefik-cert
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -48,11 +75,13 @@ spec:
         port: 80
         path: /
         passHostHeader: true
-        # tls:
-        #   - secretName: traefik-cert
 ```
 
 ### Patching CoreDNS
+
+Next, the client applications need to be able to verify the certificate, with which token are signed. To do that, they contact the Issuer url. That url is in the example `http://login.k8s.local`, which a pod will not be able to resolve correctly.
+
+To do so, we patch the CoreDNS config file and point that hostname to the service that needs to respond.
 
 ```yaml
 .:53 {
