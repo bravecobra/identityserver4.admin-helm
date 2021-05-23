@@ -216,3 +216,10 @@ mssql:
     mssqldataaccessMode: ReadWriteOnce
     mssqldbsize: 2Gi
 
+  resources:
+    limits:
+    #  cpu: 100m
+      memory: 1Gi
+    # requests:
+    #  cpu: 100m
+    #  memory: 2Gi
