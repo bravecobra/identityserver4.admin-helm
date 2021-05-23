@@ -14,10 +14,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: src
-          #charts_url: https://bravecobra.github.io/identityserver4.admin-helm/
-          #owner: bravecobra
-          # repository: identityserver4.admin-helm
-          # branch: develop
           target_dir: charts
           commit_username: bravecobra
           commit_email: bravecobra@gmail.com
