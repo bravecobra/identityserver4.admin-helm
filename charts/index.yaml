@@ -3,9 +3,9 @@ entries:
   identityserver4admin:
   - apiVersion: v2
     appVersion: 2.0.1
-    created: "2021-05-23T16:07:10.467301378Z"
+    created: "2021-05-23T16:18:04.008323976Z"
     description: A Helm chart for IdentityServer4Admin
-    digest: 2f9e7d462bae9036898af1dba3b31e6799d91c1639537f6213a83506c46c1182
+    digest: 834e24d6542166d6b1104891c50a2a055bd226a83416a05a9c11058db3e85300
     name: identityserver4admin
     type: application
     urls:
@@ -21,4 +21,4 @@ entries:
     urls:
     - https://bravecobra.github.io/identityserver4.admin-helm/charts/identityserver4admin-0.1.0.tgz
     version: 0.1.0
-generated: "2021-05-23T16:07:10.465786647Z"
+generated: "2021-05-23T16:18:04.007060162Z"
