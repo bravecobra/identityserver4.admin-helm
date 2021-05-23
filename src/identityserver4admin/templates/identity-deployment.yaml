@@ -24,7 +24,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "identityserver4admin.serviceAccountName" . }}
+      serviceAccountName: {{ include "identityserver4admin.serviceAccountNameIdentity" . }}
       securityContext:
         {{- toYaml .Values.identity.podSecurityContext | nindent 8 }}
       containers:
