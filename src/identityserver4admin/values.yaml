@@ -3,15 +3,28 @@
 # Declare variables to be passed into your templates.
 
 namespace: default
-defaultAdmin:
-  password: Pa$$word123
-  email: admin@skoruba.com
+
+seed:
+  defaultAdmin:
+    password: Pa$$word123
+    email: admin@skoruba.com
+
+certificates:
+  certManager:
+    enabled: false
+    # issuerRef:
+    #   name: selfsigned-ca-issuer
+    #   kind: ClusterIssuer
+    # commonName: identityserver4-cert
 
 admin:
   replicaCount: 1
   domainName: admin.login.k8s.local
   requireHttpsMetadata: false
   protocol: http
+  ssl:
+    enabled: false
+    secretName: "identityserver4-cert-admin"
   image:
     repository: skoruba/identityserver4-admin
     pullPolicy: IfNotPresent
@@ -59,7 +72,7 @@ admin:
         - path: /
           backend:
             serviceName: identityserver4-admin
-            servicePort: 80
+            servicePort: 443
     tls: []
     #  - secretName: chart-example-tls
     #    hosts:
@@ -95,6 +108,11 @@ identity:
   replicaCount: 1
   domainName: login.k8s.local
   protocol: http
+
+
+  ssl:
+    enabled: false
+    secretName: "identityserver4-cert-identity"
   image:
     repository: skoruba/identityserver4-sts-identity
     pullPolicy: IfNotPresent
@@ -142,7 +160,7 @@ identity:
         - path: /
           backend:
             serviceName: identityserver4-identity
-            servicePort: 80
+            servicePort: 443
     tls: []
     #  - secretName: chart-example-tls
     #    hosts:

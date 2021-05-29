@@ -7,9 +7,16 @@ metadata:
 spec:
   type: {{ .Values.identity.service.type }}
   ports:
+    {{- if .Values.identity.ssl.enabled }}
+    - port: {{ .Values.identity.service.port }}
+      targetPort: https
+      protocol: TCP
+      name: https
+    {{- else }}
     - port: {{ .Values.identity.service.port }}
       targetPort: http
       protocol: TCP
       name: http
+    {{- end }}
   selector:
     {{- include "identityserver4admin.selectorLabelsIdentity" . | nindent 4 }}

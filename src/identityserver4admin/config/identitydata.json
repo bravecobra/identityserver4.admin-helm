@@ -8,8 +8,8 @@
     "Users": [
       {
         "Username": "admin",
-        "Password": "{{ .Values.defaultAdmin.password }}",
-        "Email": "{{ .Values.defaultAdmin.email }}",
+        "Password": "{{ .Values.seed.defaultAdmin.password }}",
+        "Email": "{{ .Values.seed.defaultAdmin.email }}",
         "Roles": [
           "SkorubaIdentityAdminAdministrator"
         ],
