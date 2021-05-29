@@ -24,7 +24,7 @@ admin:
   protocol: http
   ssl:
     enabled: false
-    secretName: "identityserver4-cert-admin"
+    # secretName: "identityserver4-cert-admin"
   image:
     repository: skoruba/identityserver4-admin
     pullPolicy: IfNotPresent
@@ -63,20 +63,20 @@ admin:
 
   ingress:
     enabled: false
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: admin.login.k8s.local
-        paths:
-        - path: /
-          backend:
-            serviceName: identityserver4-admin
-            servicePort: 443
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+    # annotations: {}
+    #   # kubernetes.io/ingress.class: nginx
+    #   # kubernetes.io/tls-acme: "true"
+    # hosts:
+    #   - host: admin.login.k8s.local
+    #     paths:
+    #     - path: /
+    #       backend:
+    #         serviceName: identityserver4-admin
+    #         servicePort: 80
+    # tls:
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -108,11 +108,9 @@ identity:
   replicaCount: 1
   domainName: login.k8s.local
   protocol: http
-
-
   ssl:
     enabled: false
-    secretName: "identityserver4-cert-identity"
+    # secretName: "identityserver4-cert-identity"
   image:
     repository: skoruba/identityserver4-sts-identity
     pullPolicy: IfNotPresent
@@ -151,20 +149,20 @@ identity:
 
   ingress:
     enabled: false
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: login.k8s.local
-        paths:
-        - path: /
-          backend:
-            serviceName: identityserver4-identity
-            servicePort: 443
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+    # annotations: {}
+    #   # kubernetes.io/ingress.class: nginx
+    #   # kubernetes.io/tls-acme: "true"
+    # hosts:
+    #   - host: login.k8s.local
+    #     paths:
+    #     - path: /
+    #       backend:
+    #         serviceName: identityserver4-identity
+    #         servicePort: 80
+    # tls:
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
