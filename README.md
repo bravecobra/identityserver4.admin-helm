@@ -2,7 +2,7 @@
 
 ## Description
 
-This helm chart will deploy [IdentityServer4.Admin](https://github.com/skoruba/IdentityServer4.Admin) onto your k8s cluster in the `default` namerspace.
+This helm chart will deploy [IdentityServer4.Admin](https://github.com/skoruba/IdentityServer4.Admin) onto your k8s cluster.
 
 Deployed components:
 
@@ -23,10 +23,10 @@ helm repo update
 
 Create a `identityserver-values.yaml` file to override any default values, specific to your installation. The default values can be found in [values.yaml](./src/identityserver4admin/values.yaml)
 
-Then install the `helm` chart
+Then install the `helm` chart in the namespace you want. Here we choose to install the release `identityserver4` in the `infrastructure` namespace.
 
-```powerhshell
-helm upgrade --install identityserver4 identityserver4admin/identityserver4admin --values .\identityserver-values.yaml
+```powershell
+helm upgrade --install identityserver4 identityserver4admin/identityserver4admin --namespace infrastructure --values .\identityserver-values.yaml
 ```
 
 ## Configuration
@@ -40,7 +40,7 @@ Apart from specifying overrides of the `values.yml`, there are 2 more things tha
 
 Next, the client applications need to be able to verify the certificate, with which token are signed. To do that, they contact the Issuer url. That url is in the example `http://login.k8s.local`, which a pod will not be able to resolve correctly.
 
-To do so, we patch the CoreDNS config file and point that hostname to the service that needs to respond. Note the 2 extra rewrite lines.
+To do so, we patch the CoreDNS config file and point that hostname to the service that needs to respond. Note the 2 extra rewrite lines. Here they point to the services deployed in the `infrastructure` namespace.
 
 ```yaml
 .:53 {
@@ -48,8 +48,8 @@ To do so, we patch the CoreDNS config file and point that hostname to the servic
     health {
        lameduck 5s
     }
-    rewrite name login.k8s.local identityserver4-identity.default.svc.cluster.local
-    rewrite name admin.login.k8s.local identityserver4-admin.default.svc.cluster.local
+    rewrite name login.k8s.local identityserver4-identity.infrastructure.svc.cluster.local
+    rewrite name admin.login.k8s.local identityserver4-admin.infrastructure.svc.cluster.local
     ready
     kubernetes cluster.local in-addr.arpa ip6.arpa {
        pods insecure
@@ -78,14 +78,14 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: "login-admin-ingressroute"
-  namespace: default
+  namespace: infrastructure #the namespace you installed in
 spec:
   entryPoints:
     - web
   routes:
     - match: Host(`admin.login.k8s.local`) && PathPrefix(`/`)
       kind: Rule
-      namespace: default
+      namespace: infrastructure #the namespace you installed in
       services:
       - name: identityserver4-admin
         port: 80
@@ -96,14 +96,14 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: "login-ingressroute"
-  namespace: default
+  namespace: infrastructure #the namespace you installed in
 spec:
   entryPoints:
     - web
   routes:
     - match: Host(`login.k8s.local`) && PathPrefix(`/`)
       kind: Rule
-      namespace: default
+      namespace: infrastructure #the namespace you installed in
       services:
       - name: identityserver4-identity
         port: 80
@@ -175,7 +175,7 @@ kind: Secret
 apiVersion: v1
 metadata:
   name: identityserver4-cert-admin
-  namespace: default
+  namespace: infrastructure #the namespace you installed in
 type: kubernetes.io/tls
 data:
   ca.crt: >-
