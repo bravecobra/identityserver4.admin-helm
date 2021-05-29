@@ -1,0 +1,31 @@
+seed:
+  defaultAdmin:
+    password: Password_123
+    email: your.email@gmail.com
+
+certificates:
+  certManager:
+    enabled: true
+    issuerRef:
+      name: selfsigned-ca-issuer
+      kind: ClusterIssuer
+
+admin:
+  protocol: https
+  domainName: admin.login.k8s.local
+  ssl:
+    enabled: true
+    secretName: identityserver4-cert-admin
+  service:
+    type: ClusterIP
+    port: 443
+
+identity:
+  protocol: https
+  domainName: login.k8s.local
+  ssl:
+    enabled: true
+    secretName: identityserver4-cert-identity
+  service:
+    type: ClusterIP
+    port: 443
