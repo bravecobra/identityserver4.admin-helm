@@ -1,5 +1,5 @@
 {{- if .Values.admin.ingress.enabled -}}
-{{- $fullName := include "identityserver4admin.fullname" . -}}
+{{- $fullName := printf "%s-%s" .Release.Name "admin"  -}}
 {{- $svcPort := .Values.admin.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
