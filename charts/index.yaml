@@ -3,6 +3,17 @@ entries:
   identityserver4admin:
   - apiVersion: v2
     appVersion: 2.0.1
+    created: "2021-05-29T19:28:55.026965511Z"
+    description: A Helm chart for IdentityServer4Admin
+    digest: ed8b456a8cd9af80e50c609fb02c38eae030554d31e7eba50ea8e4faa0531975
+    icon: https://raw.githubusercontent.com/skoruba/IdentityServer4.Admin/master/docs/Images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
+    name: identityserver4admin
+    type: application
+    urls:
+    - https://bravecobra.github.io/identityserver4.admin-helm/charts/identityserver4admin-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 2.0.1
     created: "2021-05-24T18:42:34.707936984Z"
     description: A Helm chart for IdentityServer4Admin
     digest: 985f9a7ce0c02f44e17dc4edbeebfec93a434cc6e32e02891859dc754673c8dc
@@ -31,4 +42,4 @@ entries:
     urls:
     - https://bravecobra.github.io/identityserver4.admin-helm/charts/identityserver4admin-0.1.0.tgz
     version: 0.1.0
-generated: "2021-05-24T18:42:34.705669419Z"
+generated: "2021-05-29T19:28:55.025540493Z"
