@@ -57,6 +57,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Common labels Api
 */}}
+
 {{- define "identityserver4admin.labelsApi" -}}
 helm.sh/chart: {{ include "identityserver4admin.chart" . }}
 {{ include "identityserver4admin.selectorLabelsApi" . }}
@@ -65,6 +66,7 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
+
 
 {{/*
 Selector labels Admin
@@ -85,10 +87,12 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/*
 Selector labels Api
 */}}
+
 {{- define "identityserver4admin.selectorLabelsApi" -}}
 app.kubernetes.io/name: {{ include "identityserver4admin.name" . }}-api
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
 
 {{/*
 Create the name of the service account to use for admin
@@ -115,6 +119,7 @@ Create the name of the service account to use for identity
 {{/*
 Create the name of the service account to use for Api
 */}}
+
 {{- define "identityserver4admin.serviceAccountNameApi" -}}
 {{- if .Values.identity.serviceAccount.create }}
 {{- default (include "identityserver4admin.fullname" .) .Values.api.serviceAccount.name }}-api
@@ -122,6 +127,7 @@ Create the name of the service account to use for Api
 {{- default "default" .Values.api.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
 
 {{/*
 Create the name for the SA password secret key.

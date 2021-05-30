@@ -1,3 +1,4 @@
+{{- if .Values.api.enabled }}
 {{- if and (.Values.certificates.certManager.enabled) (.Values.api.ssl.enabled) }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -12,4 +13,5 @@ spec:
   commonName: {{ .Values.api.ssl.secretName }}
   dnsNames:
   - {{ .Values.api.domainName }}
+{{- end }}
 {{- end }}

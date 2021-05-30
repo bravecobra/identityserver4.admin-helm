@@ -1,3 +1,4 @@
+{{- if .Values.api.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,3 +8,4 @@ metadata:
 data:
   appsettings.json: |
 {{ tpl (.Files.Get "config/api-appsettings.json") . | printf "%s" | indent 4}}
+{{- end }}

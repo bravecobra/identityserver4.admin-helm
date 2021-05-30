@@ -1,3 +1,4 @@
+{{- if .Values.api.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -20,3 +21,4 @@ spec:
     {{- end }}
   selector:
     {{- include "identityserver4admin.selectorLabelsApi" . | nindent 4 }}
+{{- end }}

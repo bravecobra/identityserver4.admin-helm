@@ -198,6 +198,7 @@ identity:
   affinity: {}
 
 api:
+  enabled: true
   replicaCount: 1
   domainName: api.login.k8s.local
   protocol: http
