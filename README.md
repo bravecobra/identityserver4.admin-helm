@@ -111,7 +111,7 @@ spec:
         passHostHeader: true
 ```
 
-### Runnign with TLS Support
+### Running with TLS Support
 
 #### Using Cert-manager
 
@@ -185,3 +185,30 @@ data:
   tls.key: >-
     LS0tLS1CRUdJTiBSU0EgUFJ...LS0tLQo=
 ```
+
+### Database config
+
+This helm chart can provide 3 embedded database engines types.
+
+1. SqlServer
+1. MySql
+1. PostgreSQL
+
+They can be enabled by setting either of them. Enabling one of these will add an extra deployment of that database type and configure the connectionstrings in the services automatically. Be sure to set the `providerType` correctly to match.
+
+```yaml
+database:
+  providerType: SqlServer
+  # providerType: MySql
+  # providerType: PostgreSQL
+mssql:
+  enabled: true
+mysql:
+  enabled: false
+postgresql:
+  enabled: false
+```
+
+You can also use the `database.connectionString` value to override. This will override any generated connectionstring if you don't want to use any of the embedded engines and provide your own.
+
+By default it'll provide a SQL Server instance if none of the values are set.
