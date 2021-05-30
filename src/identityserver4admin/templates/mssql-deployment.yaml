@@ -42,7 +42,7 @@ spec:
            - name: SA_PASSWORD
              valueFrom:
               secretKeyRef:
-               name: mssql-secret
+               name: {{ .Release.Name }}-mssql-secret
                key: {{  template "mssql.sapassword" . }}
           {{ if .Values.mssql.resources.limits.memory }}
            - name: MSSQL_MEMORY_LIMIT_MB
