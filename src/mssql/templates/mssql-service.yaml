@@ -1,0 +1,16 @@
+{{- if .Values.mssql.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-mssql
+  labels:
+    {{- include "mssql.labelsMssql" . | nindent 4 }}
+spec:
+  type: {{ .Values.mssql.service.type }}
+  ports:
+    - port: {{ .Values.mssql.service.port }}
+      targetPort: {{ .Values.mssql.service.port }}
+      protocol: TCP
+  selector:
+    {{- include "mssql.selectorLabelsMssql" . | nindent 4 }}
+{{- end }}

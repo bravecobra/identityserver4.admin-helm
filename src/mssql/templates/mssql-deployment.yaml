@@ -1,0 +1,83 @@
+{{- if .Values.mssql.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mssql.fullname" . }}-mssql
+  labels:
+    {{- include "mssql.labelsMssql" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mssql.replicas}}
+  selector:
+    matchLabels:
+      {{- include "mssql.selectorLabelsMssql" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.mssql.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mssql.selectorLabelsMssql" . | nindent 8 }}
+    spec:
+      hostname: {{ .Values.mssql.hostname}}
+      securityContext:
+        {{- toYaml .Values.mssql.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          command:
+            - /bin/bash
+            - -c
+            - cp /var/opt/config/mssql.conf /var/opt/mssql/mssql.conf && /opt/mssql/bin/sqlservr
+          image: "{{ .Values.mssql.image.repository }}:{{ .Values.mssql.image.tag }}"
+          imagePullPolicy: {{ .Values.mssql.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.mssql.containers.ports.containerPort}}
+          env:
+           - name: MSSQL_PID
+             value: "{{ .Values.mssql.MSSQL_PID.value}}"
+           - name: ACCEPT_EULA
+             value: "{{ .Values.mssql.ACCEPT_EULA.value | upper}}"
+           - name: MSSQL_AGENT_ENABLED
+             value: "{{ .Values.mssql.MSSQL_AGENT_ENABLED.value}}"
+           - name: SA_PASSWORD
+             valueFrom:
+              secretKeyRef:
+               name: {{ .Release.Name }}-mssql-secret
+               key: {{  template "mssql.sapassword" . }}
+          {{ if .Values.mssql.resources.limits.memory }}
+           - name: MSSQL_MEMORY_LIMIT_MB
+             valueFrom:
+               resourceFieldRef:
+                 resource: limits.memory
+                 divisor: 1Mi
+          {{ end }}
+          volumeMounts:
+           - name: mssqldb
+             mountPath: /var/opt/mssql
+           - name: mssqluserdb
+             mountPath: /var/opt/mssql/userdata
+           - name: mssqllog
+             mountPath: /var/opt/mssql/userlog
+           - name: mssqltemp
+             mountPath: /var/opt/mssql/tempdb
+           - name: mssql-config-volume
+             mountPath: /var/opt/config
+          resources:
+{{ toYaml .Values.mssql.resources | indent 12 }}
+      volumes:
+       - name: mssqldb
+         persistentVolumeClaim:
+          claimName: mssql-data
+       - name: mssqluserdb
+         persistentVolumeClaim:
+          claimName: mssql-userdb
+       - name: mssqllog
+         persistentVolumeClaim:
+          claimName: mssql-log
+       - name: mssqltemp
+         persistentVolumeClaim:
+          claimName: mssql-temp
+       - name: mssql-config-volume
+         configMap:
+          name: mssql-config
+{{- end }}
