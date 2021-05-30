@@ -120,13 +120,13 @@
                 "RequireClientSecret": false,
                 "RequirePkce": true,
                 "RedirectUris": [
-                    "{{ .Values.admin.protocol }}://{{ .Values.admin.domainName }}/swagger/oauth2-redirect.html"
+                    "{{ .Values.api.protocol }}://{{ .Values.api.domainName }}/swagger/oauth2-redirect.html"
                 ],
                 "AllowedScopes": [
                     "skoruba_identity_admin_api"
                 ],
                 "AllowedCorsOrigins": [
-                    "{{ .Values.admin.protocol }}://{{ .Values.admin.domainName }}"
+                    "{{ .Values.api.protocol }}://{{ .Values.api.domainName }}"
                 ]
             }
         ]
