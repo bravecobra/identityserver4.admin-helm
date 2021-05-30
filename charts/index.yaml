@@ -3,9 +3,20 @@ entries:
   identityserver4admin:
   - apiVersion: v2
     appVersion: 2.0.1
-    created: "2021-05-29T22:09:11.141809563Z"
+    created: "2021-05-30T01:02:43.036483977Z"
+    dependencies:
+    - alias: mysql
+      condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.5.10
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.4.8
     description: A Helm chart for IdentityServer4Admin
-    digest: 3996b2bf4e836d1d49f0063777b39028bbabc10b02cc304adafe6c2fb6a0cf57
+    digest: d687a1f28539cdff766a65e02d142360f77059e72f6b21467d5163f47e9bdf64
     icon: https://raw.githubusercontent.com/skoruba/IdentityServer4.Admin/master/docs/Images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
     name: identityserver4admin
     type: application
@@ -64,4 +75,15 @@ entries:
     urls:
     - https://bravecobra.github.io/identityserver4.admin-helm/charts/identityserver4admin-0.1.0.tgz
     version: 0.1.0
-generated: "2021-05-29T22:09:11.140024448Z"
+  mssql:
+  - apiVersion: v2
+    appVersion: 2019-latest
+    created: "2021-05-30T01:02:43.037210114Z"
+    description: An unofficial Helm chart for SQl Server
+    digest: 89f2e7d64b689a7edcc8459245de8d989842298a60cebfc449004527a70f2168
+    name: mssql
+    type: application
+    urls:
+    - https://bravecobra.github.io/identityserver4.admin-helm/charts/mssql-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-05-30T01:02:43.026440462Z"
