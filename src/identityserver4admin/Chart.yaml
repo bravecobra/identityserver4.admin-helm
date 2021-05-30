@@ -23,3 +23,16 @@ version: 0.2.2
 # It is recommended to use it with quotes.
 appVersion: "2.0.1"
 icon: https://raw.githubusercontent.com/skoruba/IdentityServer4.Admin/master/docs/Images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
+
+dependencies:
+  - name: mysql
+    version: 8.5.10
+    repository: https://charts.bitnami.com/bitnami
+    condition: mysql.enabled
+    alias: mysql
+
+  - name: postgresql
+    version: 10.4.8
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+    alias: postgresql
