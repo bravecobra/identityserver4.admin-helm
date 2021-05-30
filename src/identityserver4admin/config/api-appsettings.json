@@ -1,0 +1,64 @@
+{
+    "ConnectionStrings": {
+        "ConfigurationDbConnection": "{{ include "databaseConnectionString" . }}",
+        "PersistedGrantDbConnection": "{{ include "databaseConnectionString" . }}",
+        "IdentityDbConnection": "{{ include "databaseConnectionString" . }}",
+        "AdminLogDbConnection": "{{ include "databaseConnectionString" . }}",
+        "AdminAuditLogDbConnection": "{{ include "databaseConnectionString" . }}",
+        "DataProtectionDbConnection": "{{ include "databaseConnectionString" . }}"
+    },
+    "AdminApiConfiguration": {
+        "ApiName": "Skoruba IdentityServer4 Admin Api",
+        "ApiVersion": "v1",
+        "ApiBaseUrl": "{{ .Values.api.protocol }}://{{ .Values.api.domainName }}",
+        "IdentityServerBaseUrl": "{{ .Values.identity.protocol }}://{{ .Values.identity.domainName }}",
+        "OidcSwaggerUIClientId": "skoruba_identity_admin_api_swaggerui",
+        "OidcApiName": "skoruba_identity_admin_api",
+        "AdministrationRole": "SkorubaIdentityAdminAdministrator",
+        "RequireHttpsMetadata": false,
+        "CorsAllowAnyOrigin": true,
+        "CorsAllowOrigins": []
+    },
+    "SmtpConfiguration": {
+        "Host": "",
+        "Login": "",
+        "Password": ""
+    },
+    "SendGridConfiguration": {
+        "ApiKey": "",
+        "SourceEmail": "",
+        "SourceName": ""
+    },
+    "DatabaseProviderConfiguration": {
+        "ProviderType": "{{ .Values.database.providerType }}"
+    },
+    "AuditLoggingConfiguration": {
+        "Source": "IdentityServer.Admin.Api",
+        "SubjectIdentifierClaim": "sub",
+        "SubjectNameClaim": "name",
+        "ClientIdClaim": "client_id"
+    },
+    "IdentityOptions": {
+        "Password": {
+            "RequiredLength": 8
+        },
+        "User": {
+            "RequireUniqueEmail": true
+        },
+        "SignIn": {
+            "RequireConfirmedAccount": false
+        }
+    },
+    "DataProtectionConfiguration": {
+        "ProtectKeysWithAzureKeyVault": false
+    },
+    "AzureKeyVaultConfiguration": {
+        "AzureKeyVaultEndpoint": "",
+        "ClientId": "",
+        "ClientSecret": "",
+        "TenantId": "",
+        "UseClientCredentials": true,
+        "DataProtectionKeyIdentifier": "",
+        "ReadConfigurationFromKeyVault": false
+    }
+}
