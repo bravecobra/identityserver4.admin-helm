@@ -1,6 +1,6 @@
 apiVersion: v2
-name: identityserver4admin
-description: A Helm chart for IdentityServer4Admin
+name: mssql
+description: An unofficial Helm chart for SQl Server
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,31 +15,10 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.2.2
+version: 0.1.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2.0.1"
-icon: https://raw.githubusercontent.com/skoruba/IdentityServer4.Admin/master/docs/Images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
-
-dependencies:
-  - name: mssql
-    version: 0.1.0
-    repository: https://bravecobra.github.io/identityserver4.admin-helm/charts/
-    condition: mssql.enabled
-    alias: mssql
-
-  - name: mysql
-    version: 8.5.10
-    repository: https://charts.bitnami.com/bitnami
-    condition: mysql.enabled
-    alias: mysql
-
-  - name: postgresql
-    version: 10.4.8
-    repository: https://charts.bitnami.com/bitnami
-    condition: postgresql.enabled
-    alias: postgresql
-
+appVersion: "2019-latest"

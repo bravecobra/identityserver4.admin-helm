@@ -1,11 +1,11 @@
 {
     "ConnectionStrings": {
-        "ConfigurationDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
-        "PersistedGrantDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
-        "IdentityDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
-        "AdminLogDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
-        "AdminAuditLogDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true",
-        "DataProtectionDbConnection": "Server={{ .Release.Name }}-mssql;Database=IdentityServer4Admin;User Id=sa;Password={{ .Values.mssql.sa_password }};MultipleActiveResultSets=true"
+        "ConfigurationDbConnection": "{{ include "databaseConnectionString" . }}",
+        "PersistedGrantDbConnection": "{{ include "databaseConnectionString" . }}",
+        "IdentityDbConnection": "{{ include "databaseConnectionString" . }}",
+        "AdminLogDbConnection": "{{ include "databaseConnectionString" . }}",
+        "AdminAuditLogDbConnection": "{{ include "databaseConnectionString" . }}",
+        "DataProtectionDbConnection": "{{ include "databaseConnectionString" . }}"
     },
     "SeedConfiguration": {
         "ApplySeed": true
@@ -14,7 +14,7 @@
         "ApplyDatabaseMigrations": true
     },
     "DatabaseProviderConfiguration": {
-        "ProviderType": "SqlServer"
+        "ProviderType": "{{ .Values.database.providerType }}"
     },
     "AdminConfiguration": {
         "PageTitle": "Skoruba IdentityServer4 Admin",

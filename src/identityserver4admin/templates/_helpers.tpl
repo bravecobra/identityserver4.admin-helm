@@ -125,3 +125,20 @@ Create the name for the mssql service
 {{- define "mssql.serviceName" -}}
 {{ include "identityserver4admin.name" . }}-mssql
 {{- end -}}
+
+{{- define "databaseConnectionString" -}}
+  {{- $mssqlConnection := printf "Server=%s-mssql;Database=%s;User Id=%s;Password=%s;MultipleActiveResultSets=true" .Release.Name "IdentityServer4Admin" "sa" .Values.mssql.sa_password  -}}
+  {{- $mysqlConnection := printf "server=%s-mysql;database=%s;user=%s;password=%s" .Release.Name .Values.mysql.auth.database "root" .Values.mysql.auth.rootPassword  -}}
+  {{- $postgresqlConnection := printf "Server=%s-postgresql;Port=5432;Database=%s;User Id=%s;Password=%s" .Release.Name .Values.postgresql.postgresqlDatabase "postgres" .Values.postgresql.postgresqlPassword  -}}
+  {{- if .Values.database.connectionString -}}
+    {{- default "default" .Values.database.connectionString }}
+  {{- else if .Values.mssql.enabled -}}
+    {{- default "default" $mssqlConnection }}
+  {{- else if .Values.mysql.enabled -}}
+    {{- default "default" $mysqlConnection}}
+  {{- else if .Values.postgresql.enabled -}}
+    {{- default "default" $postgresqlConnection }}
+  {{- else -}}
+  {{- end -}}
+
+{{- end -}}

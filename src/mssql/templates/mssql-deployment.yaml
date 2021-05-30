@@ -1,14 +1,15 @@
+{{- if .Values.mssql.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "identityserver4admin.fullname" . }}-mssql
+  name: {{ include "mssql.fullname" . }}-mssql
   labels:
-    {{- include "identityserver4admin.labelsMssql" . | nindent 4 }}
+    {{- include "mssql.labelsMssql" . | nindent 4 }}
 spec:
   replicas: {{ .Values.mssql.replicas}}
   selector:
     matchLabels:
-      {{- include "identityserver4admin.selectorLabelsMssql" . | nindent 6 }}
+      {{- include "mssql.selectorLabelsMssql" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.mssql.podAnnotations }}
@@ -16,7 +17,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "identityserver4admin.selectorLabelsMssql" . | nindent 8 }}
+        {{- include "mssql.selectorLabelsMssql" . | nindent 8 }}
     spec:
       hostname: {{ .Values.mssql.hostname}}
       securityContext:
@@ -41,7 +42,7 @@ spec:
            - name: SA_PASSWORD
              valueFrom:
               secretKeyRef:
-               name: mssql-secret
+               name: {{ .Release.Name }}-mssql-secret
                key: {{  template "mssql.sapassword" . }}
           {{ if .Values.mssql.resources.limits.memory }}
            - name: MSSQL_MEMORY_LIMIT_MB
@@ -79,3 +80,4 @@ spec:
        - name: mssql-config-volume
          configMap:
           name: mssql-config
+{{- end }}

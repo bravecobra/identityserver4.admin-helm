@@ -7,6 +7,16 @@ seed:
     password: Pa$$word123
     email: admin@skoruba.com
 
+database:
+  providerType: SqlServer
+  # providerType: MySql
+  # providerType: PostgreSQL
+
+  ## Use this value to override the connectionString if not enabling any of the embedded database charts
+  ## The same connectionstring will be used for all database connections
+  ## Setting this value will override any of the generated connectionstrings when using the embedded databases
+  # connectionString: ""
+
 certificates:
   certManager:
     enabled: false
@@ -191,7 +201,7 @@ api: {}
 
 mssql:
   replicas: 1
-
+  enabled: true
   image:
     repository: mcr.microsoft.com/mssql/server
     pullPolicy: IfNotPresent
@@ -237,3 +247,15 @@ mssql:
     # requests:
     #  cpu: 100m
     #  memory: 2Gi
+
+## https://github.com/bitnami/charts/blob/master/bitnami/mysql/values.yaml
+mysql:
+  enabled: false
+  auth:
+    rootPassword: Toughpass1!
+    database: IdentityServer4Admin
+## https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml
+postgresql:
+  enabled: false
+  postgresqlPassword: Toughpass1!
+  postgresqlDatabase: IdentityServer4Admin
