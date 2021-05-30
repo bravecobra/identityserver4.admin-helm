@@ -1,7 +1,17 @@
 apiVersion: v2
 name: identityserver4admin
 description: A Helm chart for IdentityServer4Admin
+keywords:
+  - identityserver4
+  - identityserver4admin
 
+home: https://github.com/bravecobra/identityserver4.admin-helm
+sources:
+  - https://github.com/bravecobra/identityserver4.admin-helm
+
+maintainers:
+  - name: Giovanni Van Geel
+    email: vangeelg@gmail.com
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -22,7 +32,7 @@ version: 0.3.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "2.0.1"
-icon: https://raw.githubusercontent.com/skoruba/IdentityServer4.Admin/master/docs/Images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
+icon: https://bravecobra.github.io/identityserver4.admin-helm/logo.png
 
 dependencies:
   - name: mssql
