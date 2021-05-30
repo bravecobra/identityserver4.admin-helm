@@ -1,9 +1,12 @@
 dependencies:
+- name: mssql
+  repository: https://bravecobra.github.io/identityserver4.admin-helm/charts/
+  version: 0.1.0
 - name: mysql
   repository: https://charts.bitnami.com/bitnami
   version: 8.5.10
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 10.4.8
-digest: sha256:b8d40b2e2383b06539bf4a1a773b46fc3ab6aa2d215fd0f0236deabcebe3dfcd
-generated: "2021-05-30T01:06:43.3295097+02:00"
+digest: sha256:85694afe8207796ad1b823306fa6acf94d57fb14dfb463145ee2f62bbfa10628
+generated: "2021-05-30T03:03:58.4152137+02:00"

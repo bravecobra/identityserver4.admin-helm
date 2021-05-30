@@ -25,6 +25,12 @@ appVersion: "2.0.1"
 icon: https://raw.githubusercontent.com/skoruba/IdentityServer4.Admin/master/docs/Images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
 
 dependencies:
+  - name: mssql
+    version: 0.1.0
+    repository: https://bravecobra.github.io/identityserver4.admin-helm/charts/
+    condition: mssql.enabled
+    alias: mssql
+
   - name: mysql
     version: 8.5.10
     repository: https://charts.bitnami.com/bitnami
@@ -36,3 +42,4 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
     alias: postgresql
+
