@@ -12,6 +12,11 @@ database:
   # providerType: MySql
   # providerType: PostgreSQL
 
+  ## Use this value to override the connectionString if not enabling any of the embedded database charts
+  ## The same connectionstring will be used for all database connections
+  ## Setting this value will override any of the generated connectionstrings when using the embedded databases
+  # connectionString: ""
+
 certificates:
   certManager:
     enabled: false
