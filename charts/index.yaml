@@ -3,7 +3,7 @@ entries:
   identityserver4admin:
   - apiVersion: v2
     appVersion: 2.0.1
-    created: "2021-07-27T00:37:40.371945954Z"
+    created: "2021-07-27T00:43:50.860346512Z"
     dependencies:
     - alias: mssql
       condition: mssql.enabled
@@ -21,7 +21,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 10.4.8
     description: A Helm chart for IdentityServer4Admin
-    digest: ebd86a6f4cfb0f75884e33deb1a9ec34cec4ccf25125c4a7d1dfdc4bb1f2fb5d
+    digest: 8914c51803dc9c25cf09f5a214fe27756668a8e9e4745e33e49204e5ae8eaf95
     home: https://github.com/bravecobra/identityserver4.admin-helm
     icon: https://bravecobra.github.io/identityserver4.admin-helm/logo.png
     keywords:
@@ -150,12 +150,12 @@ entries:
   mssql:
   - apiVersion: v2
     appVersion: 2019-latest
-    created: "2021-07-27T00:37:40.372559866Z"
+    created: "2021-07-27T00:43:50.861448121Z"
     description: An unofficial Helm chart for SQl Server
-    digest: cc2d12c3096368fe0f0f1203e30fd445af9932bc5488f61735479eb33083a7b6
+    digest: f3fe0dc44efafa9c3b03e2ea377ca8998fd9d615ab9fb79a4d0201436ebc499a
     name: mssql
     type: application
     urls:
     - https://bravecobra.github.io/identityserver4.admin-helm/charts/mssql-0.1.0.tgz
     version: 0.1.0
-generated: "2021-07-27T00:37:40.355278804Z"
+generated: "2021-07-27T00:43:50.842230675Z"
