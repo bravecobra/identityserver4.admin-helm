@@ -3,6 +3,42 @@ entries:
   identityserver4admin:
   - apiVersion: v2
     appVersion: 2.0.1
+    created: "2021-07-27T00:45:35.190012751Z"
+    dependencies:
+    - alias: mssql
+      condition: mssql.enabled
+      name: mssql
+      repository: https://bravecobra.github.io/identityserver4.admin-helm/charts/
+      version: 0.1.0
+    - alias: mysql
+      condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.5.10
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.4.8
+    description: A Helm chart for IdentityServer4Admin
+    digest: dc7d9623ccb371155d1d2e2ada55bd5f58f23041aaeeb7fd34cd79da8aa1b5fc
+    home: https://github.com/bravecobra/identityserver4.admin-helm
+    icon: https://bravecobra.github.io/identityserver4.admin-helm/logo.png
+    keywords:
+    - identityserver4
+    - identityserver4admin
+    maintainers:
+    - email: vangeelg@gmail.com
+      name: Giovanni Van Geel
+    name: identityserver4admin
+    sources:
+    - https://github.com/bravecobra/identityserver4.admin-helm
+    type: application
+    urls:
+    - https://bravecobra.github.io/identityserver4.admin-helm/charts/identityserver4admin-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
+    appVersion: 2.0.1
     created: "2021-07-27T00:43:50.860346512Z"
     dependencies:
     - alias: mssql
@@ -150,12 +186,12 @@ entries:
   mssql:
   - apiVersion: v2
     appVersion: 2019-latest
-    created: "2021-07-27T00:43:50.861448121Z"
+    created: "2021-07-27T00:45:35.190490358Z"
     description: An unofficial Helm chart for SQl Server
-    digest: f3fe0dc44efafa9c3b03e2ea377ca8998fd9d615ab9fb79a4d0201436ebc499a
+    digest: c334bf226e105f8350736f554b1acccd56037cee9c4bbd9ed919a21a97d71e72
     name: mssql
     type: application
     urls:
     - https://bravecobra.github.io/identityserver4.admin-helm/charts/mssql-0.1.0.tgz
     version: 0.1.0
-generated: "2021-07-27T00:43:50.842230675Z"
+generated: "2021-07-27T00:45:35.179369497Z"
