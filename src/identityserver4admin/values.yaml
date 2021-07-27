@@ -3,9 +3,9 @@
 # Declare variables to be passed into your templates.
 
 seed:
-  defaultAdmin:
-    password: Pa$$word123
-    email: admin@skoruba.com
+    defaultAdmin:
+      password: Pa$$word123
+      email: admin@skoruba.com
 
 database:
   providerType: SqlServer
@@ -284,53 +284,54 @@ api:
   affinity: {}
 
 mssql:
-  replicas: 1
-  enabled: true
-  image:
-    repository: mcr.microsoft.com/mssql/server
-    pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "2019-latest"
+  mssql:
+    replicas: 1
+    enabled: true
+    image:
+      repository: mcr.microsoft.com/mssql/server
+      pullPolicy: IfNotPresent
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: "2019-latest"
 
-  ACCEPT_EULA:
-      value: "y"
-  MSSQL_PID:
-      value: "Developer"
-  MSSQL_AGENT_ENABLED:
-      value: "true"
-  hostname: mssqllatest
-  sa_password: "Toughpass1!"
-  containers:
-    ports:
-        containerPort: 1433
+    ACCEPT_EULA:
+        value: "y"
+    MSSQL_PID:
+        value: "Developer"
+    MSSQL_AGENT_ENABLED:
+        value: "true"
+    hostname: mssqllatest
+    sa_password: "Toughpass1!"
+    containers:
+      ports:
+          containerPort: 1433
 
-  podAnnotations: {}
+    podAnnotations: {}
 
-  podSecurityContext:
-    fsGroup: 10001
+    podSecurityContext:
+      fsGroup: 10001
 
-  service:
-    type: ClusterIP
-    port: 1433
+    service:
+      type: ClusterIP
+      port: 1433
 
-  pvc:
-    StorageClass: "standard"
-    userdbaccessMode: ReadWriteOnce
-    userdbsize: 5Gi
-    userlogaccessMode: ReadWriteOnce
-    userlogsize: 5Gi
-    tempdbaccessMode: ReadWriteOnce
-    tempsize: 2Gi
-    mssqldataaccessMode: ReadWriteOnce
-    mssqldbsize: 2Gi
+    pvc:
+      StorageClass: "standard"
+      userdbaccessMode: ReadWriteOnce
+      userdbsize: 1Gi
+      userlogaccessMode: ReadWriteOnce
+      userlogsize: 1Gi
+      tempdbaccessMode: ReadWriteOnce
+      tempsize: 512Mi
+      mssqldataaccessMode: ReadWriteOnce
+      mssqldbsize: 512Mi
 
-  resources:
-    limits:
-    #  cpu: 100m
-      memory: 1Gi
-    # requests:
-    #  cpu: 100m
-    #  memory: 2Gi
+    resources:
+      limits:
+        cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 512Mi
 
 ## https://github.com/bitnami/charts/blob/master/bitnami/mysql/values.yaml
 mysql:

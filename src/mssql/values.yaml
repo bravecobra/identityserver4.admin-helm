@@ -35,18 +35,18 @@ mssql:
   pvc:
     StorageClass: "standard"
     userdbaccessMode: ReadWriteOnce
-    userdbsize: 5Gi
+    userdbsize: 1Gi
     userlogaccessMode: ReadWriteOnce
-    userlogsize: 5Gi
+    userlogsize: 1Gi
     tempdbaccessMode: ReadWriteOnce
-    tempsize: 2Gi
+    tempsize: 512Mi
     mssqldataaccessMode: ReadWriteOnce
-    mssqldbsize: 2Gi
+    mssqldbsize: 512Mi
 
   resources:
     limits:
-    #  cpu: 100m
+      cpu: 100m
       memory: 1Gi
-    # requests:
-    #  cpu: 100m
-    #  memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
