@@ -144,18 +144,21 @@ Create the name for the mssql service
 {{- end -}}
 
 {{- define "databaseConnectionString" -}}
-  {{- $mssqlConnection := printf "Server=%s-mssql;Database=%s;User Id=%s;Password=%s;MultipleActiveResultSets=true" .Release.Name "IdentityServer4Admin" "sa" .Values.mssql.sa_password  -}}
-  {{- $mysqlConnection := printf "server=%s-mysql;database=%s;user=%s;password=%s" .Release.Name .Values.mysql.auth.database "root" .Values.mysql.auth.rootPassword  -}}
-  {{- $postgresqlConnection := printf "Server=%s-postgresql;Port=5432;Database=%s;User Id=%s;Password=%s" .Release.Name .Values.postgresql.postgresqlDatabase "postgres" .Values.postgresql.postgresqlPassword  -}}
+  {{- $mssqlConnection := printf "Server=%s;Database=%s;User Id=%s;Password=%s;MultipleActiveResultSets=true" .Values.mssql.auth.hostname .Values.mssql.auth.database .Values.mssql.auth.username .Values.mssql.auth.password  -}}
+  {{- $mysqlConnection := printf "server=%s;database=%s;user=%s;password=%s" .Values.mysql.auth.hostname .Values.mysql.auth.database .Values.mysql.auth.user .Values.mysql.auth.password  -}}
+  {{- $postgresqlConnection := printf "Server=%s;Port=5432;Database=%s;User Id=%s;Password=%s" .Values.postgresql.auth.hostname .Values.postgresql.auth.database .Values.postgresql.auth .Values.postgresql.auth.password  -}}
+
   {{- if .Values.database.connectionString -}}
     {{- default "default" .Values.database.connectionString }}
-  {{- else if .Values.mssql.enabled -}}
-    {{- default "default" $mssqlConnection }}
-  {{- else if .Values.mysql.enabled -}}
-    {{- default "default" $mysqlConnection}}
-  {{- else if .Values.postgresql.enabled -}}
-    {{- default "default" $postgresqlConnection }}
-  {{- else -}}
   {{- end -}}
 
+  {{- if eq .Values.database.providerType "SqlServer" -}}
+    {{- default "default" $mssqlConnection }}
+  {{- end -}}
+  {{- if eq .Values.database.providerType "MySql" -}}
+    {{- default "default" $mysqlConnection }}
+  {{- end -}}
+  {{- if eq .Values.database.providerType "PostgreSQL" -}}
+    {{- default "default" $postgresqlConnection }}
+  {{- end -}}
 {{- end -}}

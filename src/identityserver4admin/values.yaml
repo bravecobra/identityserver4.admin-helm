@@ -3,19 +3,15 @@
 # Declare variables to be passed into your templates.
 
 seed:
+  seedidentity:
+    enabled: true
+    defaultSeed: true
     defaultAdmin:
       password: Pa$$word123
       email: admin@skoruba.com
-
-database:
-  providerType: SqlServer
-  # providerType: MySql
-  # providerType: PostgreSQL
-
-  ## Use this value to override the connectionString if not enabling any of the embedded database charts
-  ## The same connectionstring will be used for all database connections
-  ## Setting this value will override any of the generated connectionstrings when using the embedded databases
-  # connectionString: ""
+  seedserverdata:
+    enabled: true
+    defaultSeed: true
 
 certificates:
   certManager:
@@ -38,7 +34,7 @@ admin:
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     #tag: "2.0.1"
-
+  applyDatabaseMigrations: true
   imagePullSecrets: []
   nameOverride: ""
   fullnameOverride: ""
@@ -283,64 +279,35 @@ api:
 
   affinity: {}
 
+database:
+  providerType: SqlServer
+  # providerType: MySql
+  # providerType: PostgreSQL
+
+  ## Use this value to override the connectionString if not enabling any of the embedded database charts
+  ## The same connectionstring will be used for all database connections
+  ## Setting this value will override any of the generated connectionstrings when using the embedded databases
+  # connectionString: ""
+
 mssql:
-  mssql:
-    replicas: 1
-    enabled: true
-    image:
-      repository: mcr.microsoft.com/mssql/server
-      pullPolicy: IfNotPresent
-      # Overrides the image tag whose default is the chart appVersion.
-      tag: "2019-latest"
-
-    ACCEPT_EULA:
-        value: "y"
-    MSSQL_PID:
-        value: "Developer"
-    MSSQL_AGENT_ENABLED:
-        value: "true"
-    hostname: mssqllatest
-    sa_password: "Toughpass1!"
-    containers:
-      ports:
-          containerPort: 1433
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      fsGroup: 10001
-
-    service:
-      type: ClusterIP
-      port: 1433
-
-    pvc:
-      StorageClass: "standard"
-      userdbaccessMode: ReadWriteOnce
-      userdbsize: 1Gi
-      userlogaccessMode: ReadWriteOnce
-      userlogsize: 1Gi
-      tempdbaccessMode: ReadWriteOnce
-      tempsize: 512Mi
-      mssqldataaccessMode: ReadWriteOnce
-      mssqldbsize: 512Mi
-
-    resources:
-      limits:
-        cpu: 100m
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 512Mi
-
-## https://github.com/bitnami/charts/blob/master/bitnami/mysql/values.yaml
+  enabled: true
+  auth:
+    hostname: mssql-mssql
+    database: IdentityServer4Admin
+    password: Toughpass1!
+    username: "sa"
 mysql:
   enabled: false
   auth:
-    rootPassword: Toughpass1!
+    hostname: mysql-mysql
+    username: root
+    password: Toughpass1!
     database: IdentityServer4Admin
-## https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml
 postgresql:
   enabled: false
-  postgresqlPassword: Toughpass1!
-  postgresqlDatabase: IdentityServer4Admin
+  auth:
+    hostname: postgresql-postgresql
+    database: IdentityServer4Admin
+    username: postgres
+    password: Toughpass1!
+
