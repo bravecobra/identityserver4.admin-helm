@@ -8,7 +8,7 @@ Deployed components:
 
 - Admin
 - STS.Identity
-- MSSQL instance
+- API
 
 > Note: Currently there is no support for TLS, external database services or namespaces. The API service is also missing at the moment.
 
