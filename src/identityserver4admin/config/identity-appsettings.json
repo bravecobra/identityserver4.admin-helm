@@ -1,10 +1,4 @@
 {
-    "ConnectionStrings": {
-        "ConfigurationDbConnection": "{{ include "databaseConnectionString" . }}",
-        "PersistedGrantDbConnection": "{{ include "databaseConnectionString" . }}",
-        "IdentityDbConnection": "{{ include "databaseConnectionString" . }}",
-        "DataProtectionDbConnection": "{{ include "databaseConnectionString" . }}"
-    },
     "DatabaseProviderConfiguration": {
         "ProviderType": "{{ .Values.database.providerType }}"
     },

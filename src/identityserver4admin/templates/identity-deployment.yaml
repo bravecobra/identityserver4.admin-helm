@@ -50,6 +50,9 @@ spec:
             - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
               value: /usr/local/share/ca-certificates/tls.key
             {{- end }}
+          envFrom:
+            - secretRef:
+                name: database-credentials
           volumeMounts:
             - name: "config"
               mountPath: "/app/appsettings.json"

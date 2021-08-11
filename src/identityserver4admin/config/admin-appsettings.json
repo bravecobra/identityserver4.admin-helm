@@ -1,12 +1,4 @@
 {
-    "ConnectionStrings": {
-        "ConfigurationDbConnection": "{{ include "databaseConnectionString" . }}",
-        "PersistedGrantDbConnection": "{{ include "databaseConnectionString" . }}",
-        "IdentityDbConnection": "{{ include "databaseConnectionString" . }}",
-        "AdminLogDbConnection": "{{ include "databaseConnectionString" . }}",
-        "AdminAuditLogDbConnection": "{{ include "databaseConnectionString" . }}",
-        "DataProtectionDbConnection": "{{ include "databaseConnectionString" . }}"
-    },
     "SeedConfiguration": {
         "ApplySeed": true
     },
