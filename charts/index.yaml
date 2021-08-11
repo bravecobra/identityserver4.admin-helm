@@ -3,6 +3,26 @@ entries:
   identityserver4admin:
   - apiVersion: v2
     appVersion: 2.0.1
+    created: "2021-08-11T00:46:15.922187965Z"
+    description: A Helm chart for IdentityServer4Admin
+    digest: 11c9f5e8c4c699f86b3694f1c2118f20826cb73433f551db60a5a2f11caeaf13
+    home: https://github.com/bravecobra/identityserver4.admin-helm
+    icon: https://bravecobra.github.io/identityserver4.admin-helm/logo.png
+    keywords:
+    - identityserver4
+    - identityserver4admin
+    maintainers:
+    - email: vangeelg@gmail.com
+      name: Giovanni Van Geel
+    name: identityserver4admin
+    sources:
+    - https://github.com/bravecobra/identityserver4.admin-helm
+    type: application
+    urls:
+    - https://bravecobra.github.io/identityserver4.admin-helm/charts/identityserver4admin-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
+    appVersion: 2.0.1
     created: "2021-08-11T00:39:02.926998923Z"
     description: A Helm chart for IdentityServer4Admin
     digest: dc617ded53b4fca7acee35b0f2028b5d287923ede469e49687922741b216e26e
@@ -206,12 +226,12 @@ entries:
   mssql:
   - apiVersion: v2
     appVersion: 2019-latest
-    created: "2021-08-11T00:39:02.927554757Z"
+    created: "2021-08-11T00:46:15.922652171Z"
     description: An unofficial Helm chart for SQl Server
-    digest: f3c4fc0947bbf95d95d499f158e23733d754533b4d9fab43e7116b8acf05be83
+    digest: 448a3db8e69e8f1136d47d034a10a524a23e41ffe8dc860c2b49e5637bcfa5a4
     name: mssql
     type: application
     urls:
     - https://bravecobra.github.io/identityserver4.admin-helm/charts/mssql-0.1.0.tgz
     version: 0.1.0
-generated: "2021-08-11T00:39:02.925100506Z"
+generated: "2021-08-11T00:46:15.920557743Z"
