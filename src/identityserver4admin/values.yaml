@@ -295,7 +295,7 @@ mssql:
     hostname: mssql-mssql
     database: IdentityServer4Admin
     password: Toughpass1!
-    username: "sa"
+    username: sa
 mysql:
   enabled: false
   auth:
