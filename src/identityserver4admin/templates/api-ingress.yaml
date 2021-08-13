@@ -1,6 +1,7 @@
-{{- if .Values.identity.ingress.enabled -}}
-{{- $fullName := printf "%s-%s" .Release.Name "identity"  -}}
-{{- $svcPort := .Values.identity.service.port -}}
+{{- if .Values.api.enabled }}
+{{- if .Values.api.ingress.enabled -}}
+{{- $fullName := printf "%s-%s" .Release.Name "api"  -}}
+{{- $svcPort := .Values.api.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else -}}
@@ -10,15 +11,15 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "identityserver4admin.labelsIdentity" . | nindent 4 }}
-  {{- with .Values.identity.ingress.annotations }}
+    {{- include "identityserver4admin.labelsApi" . | nindent 4 }}
+  {{- with .Values.api.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.identity.ingress.tls }}
+  {{- if .Values.api.ingress.tls }}
   tls:
-    {{- range .Values.identity.ingress.tls }}
+    {{- range .Values.api.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -27,7 +28,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.identity.ingress.hosts }}
+    {{- range .Values.api.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -42,3 +43,4 @@ spec:
           {{- end }}
     {{- end }}
   {{- end }}
+{{- end }}

@@ -1,9 +1,10 @@
+{{- if .Values.mssql.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-mssql
   labels:
-    {{- include "identityserver4admin.labelsMssql" . | nindent 4 }}
+    {{- include "mssql.labelsMssql" . | nindent 4 }}
 spec:
   type: {{ .Values.mssql.service.type }}
   ports:
@@ -11,4 +12,5 @@ spec:
       targetPort: {{ .Values.mssql.service.port }}
       protocol: TCP
   selector:
-    {{- include "identityserver4admin.selectorLabelsMssql" . | nindent 4 }}
+    {{- include "mssql.selectorLabelsMssql" . | nindent 4 }}
+{{- end }}

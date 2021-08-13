@@ -2,22 +2,39 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-namespace: default
-defaultAdmin:
-  password: Pa$$word123
-  email: admin@skoruba.com
+seed:
+  seedidentity:
+    enabled: true
+    defaultSeed: true
+    defaultAdmin:
+      password: Pa$$word123
+      email: admin@skoruba.com
+  seedserverdata:
+    enabled: true
+    defaultSeed: true
+
+certificates:
+  certManager:
+    enabled: false
+    # issuerRef:
+    #   name: selfsigned-ca-issuer
+    #   kind: ClusterIssuer
+    # commonName: identityserver4-cert
 
 admin:
   replicaCount: 1
   domainName: admin.login.k8s.local
   requireHttpsMetadata: false
   protocol: http
+  ssl:
+    enabled: false
+    # secretName: "identityserver4-cert-admin"
   image:
     repository: skoruba/identityserver4-admin
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     #tag: "2.0.1"
-
+  applyDatabaseMigrations: true
   imagePullSecrets: []
   nameOverride: ""
   fullnameOverride: ""
@@ -50,20 +67,20 @@ admin:
 
   ingress:
     enabled: false
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: admin.login.k8s.local
-        paths:
-        - path: /
-          backend:
-            serviceName: identityserver4-admin
-            servicePort: 80
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+    # annotations: {}
+    #   # kubernetes.io/ingress.class: nginx
+    #   # kubernetes.io/tls-acme: "true"
+    # hosts:
+    #   - host: admin.login.k8s.local
+    #     paths:
+    #     - path: /
+    #       backend:
+    #         serviceName: identityserver4-admin
+    #         servicePort: 80
+    # tls:
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -95,6 +112,9 @@ identity:
   replicaCount: 1
   domainName: login.k8s.local
   protocol: http
+  ssl:
+    enabled: false
+    # secretName: "identityserver4-cert-identity"
   image:
     repository: skoruba/identityserver4-sts-identity
     pullPolicy: IfNotPresent
@@ -133,20 +153,20 @@ identity:
 
   ingress:
     enabled: false
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: login.k8s.local
-        paths:
-        - path: /
-          backend:
-            serviceName: identityserver4-identity
-            servicePort: 80
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+    # annotations: {}
+    #   # kubernetes.io/ingress.class: nginx
+    #   # kubernetes.io/tls-acme: "true"
+    # hosts:
+    #   - host: login.k8s.local
+    #     paths:
+    #     - path: /
+    #       backend:
+    #         serviceName: identityserver4-identity
+    #         servicePort: 80
+    # tls:
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -173,53 +193,121 @@ identity:
 
   affinity: {}
 
-api: {}
-
-mssql:
-  replicas: 1
-
+api:
+  enabled: true
+  replicaCount: 1
+  domainName: api.login.k8s.local
+  protocol: http
+  ssl:
+    enabled: false
+    # secretName: "identityserver4-cert-identity"
   image:
-    repository: mcr.microsoft.com/mssql/server
+    repository: skoruba/identityserver4-admin-api
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "2019-latest"
+    tag: "2.0.1"
 
-  ACCEPT_EULA:
-      value: "y"
-  MSSQL_PID:
-      value: "Developer"
-  MSSQL_AGENT_ENABLED:
-      value: "true"
-  hostname: mssqllatest
-  sa_password: "Toughpass1!"
-  containers:
-    ports:
-        containerPort: 1433
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
 
   podAnnotations: {}
 
-  podSecurityContext:
-    fsGroup: 10001
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
 
   service:
     type: ClusterIP
-    port: 1433
+    port: 80
 
-  pvc:
-    StorageClass: "standard"
-    userdbaccessMode: ReadWriteOnce
-    userdbsize: 5Gi
-    userlogaccessMode: ReadWriteOnce
-    userlogsize: 5Gi
-    tempdbaccessMode: ReadWriteOnce
-    tempsize: 2Gi
-    mssqldataaccessMode: ReadWriteOnce
-    mssqldbsize: 2Gi
+  ingress:
+    enabled: false
+    # annotations: {}
+    #   # kubernetes.io/ingress.class: nginx
+    #   # kubernetes.io/tls-acme: "true"
+    # hosts:
+    #   - host: api.login.k8s.local
+    #     paths:
+    #     - path: /
+    #       backend:
+    #         serviceName: identityserver4-api
+    #         servicePort: 80
+    # tls:
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
 
-  resources:
-    limits:
-    #  cpu: 100m
-      memory: 1Gi
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
     # requests:
-    #  cpu: 100m
-    #  memory: 2Gi
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+database:
+  providerType: SqlServer
+  # providerType: MySql
+  # providerType: PostgreSQL
+
+  ## Use this value to override the connectionString if not enabling any of the embedded database charts
+  ## The same connectionstring will be used for all database connections
+  ## Setting this value will override any of the generated connectionstrings when using the embedded databases
+  # connectionString: ""
+
+mssql:
+  enabled: true
+  auth:
+    hostname: mssql-mssql
+    database: IdentityServer4Admin
+    password: Toughpass1!
+    username: sa
+mysql:
+  enabled: false
+  auth:
+    hostname: mysql-mysql
+    username: root
+    password: Toughpass1!
+    database: IdentityServer4Admin
+postgresql:
+  enabled: false
+  auth:
+    hostname: postgresql-postgresql
+    database: IdentityServer4Admin
+    username: postgres
+    password: Toughpass1!
+

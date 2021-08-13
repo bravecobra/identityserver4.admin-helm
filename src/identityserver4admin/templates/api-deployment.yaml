@@ -1,38 +1,39 @@
+{{- if .Values.api.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "identityserver4admin.fullname" . }}-identity
+  name: {{ include "identityserver4admin.fullname" . }}-api
   labels:
-    {{- include "identityserver4admin.labelsIdentity" . | nindent 4 }}
+    {{- include "identityserver4admin.labelsApi" . | nindent 4 }}
 spec:
-  {{- if not .Values.identity.autoscaling.enabled }}
-  replicas: {{ .Values.identity.replicaCount }}
+  {{- if not .Values.api.autoscaling.enabled }}
+  replicas: {{ .Values.api.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "identityserver4admin.selectorLabelsIdentity" . | nindent 6 }}
+      {{- include "identityserver4admin.selectorLabelsApi" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.identity.podAnnotations }}
+      {{- with .Values.api.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "identityserver4admin.selectorLabelsIdentity" . | nindent 8 }}
+        {{- include "identityserver4admin.selectorLabelsApi" . | nindent 8 }}
     spec:
-      {{- with .Values.identity.imagePullSecrets }}
+      {{- with .Values.api.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "identityserver4admin.serviceAccountNameIdentity" . }}
+      serviceAccountName: {{ include "identityserver4admin.serviceAccountNameApi" . }}
       securityContext:
-        {{- toYaml .Values.identity.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.api.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-identity
+        - name: {{ .Chart.Name }}-api
           securityContext:
-            {{- toYaml .Values.identity.securityContext | nindent 12 }}
-          image: "{{ .Values.identity.image.repository }}:{{ .Values.identity.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.identity.image.pullPolicy }}
+            {{- toYaml .Values.api.securityContext | nindent 12 }}
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api.image.pullPolicy }}
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: Development
@@ -60,7 +61,7 @@ spec:
             - name: "serilog"
               mountPath: "/app/serilog.json"
               subPath: "serilog.json"
-            {{- if .Values.identity.ssl.enabled }}
+            {{- if .Values.api.ssl.enabled }}
             - name: certs
               mountPath: /usr/local/share/ca-certificates/ca.crt
               subPath: ca.crt
@@ -74,19 +75,19 @@ spec:
               subPath: tls.key
               readOnly: true
             {{- end -}}
-          {{- if .Values.identity.ssl.enabled }}
+          {{- if .Values.api.ssl.enabled }}
           ports:
             - name: https
               containerPort: 443
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /swagger/
               port: https
               scheme: HTTPS
           readinessProbe:
             httpGet:
-              path: /
+              path: /swagger/
               port: https
               scheme: HTTPS
           {{- else }}
@@ -96,29 +97,29 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /swagger/
               port: http
               scheme: HTTP
           readinessProbe:
             httpGet:
-              path: /
+              path: /swagger/
               port: http
               scheme: HTTP
           {{- end }}
           resources:
-            {{- toYaml .Values.identity.resources | nindent 12 }}
+            {{- toYaml .Values.api.resources | nindent 12 }}
       dnsPolicy: ClusterFirstWithHostNet
       volumes:
         - name: "config"
           configMap:
-            name: "{{ include "identityserver4admin.fullname" . }}-identity-app-settings"
+            name: "{{ include "identityserver4admin.fullname" . }}-api-app-settings"
         - name: "serilog"
           configMap:
             name: "{{ include "identityserver4admin.fullname" . }}-serilog"
-        {{- if .Values.identity.ssl.enabled }}
+        {{- if .Values.api.ssl.enabled }}
         - name: certs
           secret:
-            secretName: {{ .Values.identity.ssl.secretName }}
+            secretName: {{ .Values.api.ssl.secretName }}
             items:
             - key: ca.crt
               path: ca.crt
@@ -127,15 +128,16 @@ spec:
             - key: tls.key
               path: tls.key
         {{- end }}
-      {{- with .Values.identity.nodeSelector }}
+      {{- with .Values.api.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.identity.affinity }}
+      {{- with .Values.api.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.identity.tolerations }}
+      {{- with .Values.api.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }}

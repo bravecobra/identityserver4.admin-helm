@@ -1,0 +1,52 @@
+# Default values for identityserver4admin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+mssql:
+  replicas: 1
+  enabled: true
+  image:
+    repository: mcr.microsoft.com/mssql/server
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "2019-latest"
+
+  ACCEPT_EULA:
+      value: "y"
+  MSSQL_PID:
+      value: "Developer"
+  MSSQL_AGENT_ENABLED:
+      value: "true"
+  hostname: mssqllatest
+  sa_password: "Toughpass1!"
+  containers:
+    ports:
+        containerPort: 1433
+
+  podAnnotations: {}
+
+  podSecurityContext:
+    fsGroup: 10001
+
+  service:
+    type: ClusterIP
+    port: 1433
+
+  pvc:
+    StorageClass: "standard"
+    userdbaccessMode: ReadWriteOnce
+    userdbsize: 1Gi
+    userlogaccessMode: ReadWriteOnce
+    userlogsize: 1Gi
+    tempdbaccessMode: ReadWriteOnce
+    tempsize: 512Mi
+    mssqldataaccessMode: ReadWriteOnce
+    mssqldbsize: 512Mi
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi

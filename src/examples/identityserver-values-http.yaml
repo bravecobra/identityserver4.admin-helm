@@ -1,0 +1,10 @@
+seed:
+  defaultAdmin:
+    password: Password_123
+    email: your.email@gmail.com
+
+admin:
+  domainName: admin.login.k8s.local
+
+identity:
+  domainName: login.k8s.local

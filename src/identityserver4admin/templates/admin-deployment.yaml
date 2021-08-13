@@ -24,7 +24,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "identityserver4admin.serviceAccountName" . }}
+      serviceAccountName: {{ include "identityserver4admin.serviceAccountNameAdmin" . }}
       securityContext:
         {{- toYaml .Values.admin.podSecurityContext | nindent 8 }}
       containers:
@@ -39,31 +39,81 @@ spec:
               value: "Development"
             - name: Serilog__MinimumLevel__Default
               value: Debug
+            {{- if .Values.admin.ssl.enabled }}
+            - name: DockerConfiguration__UpdateCaCertificate
+              value: "true"
+            - name: ASPNETCORE_URLS
+              value: https://*:443
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              value: /usr/local/share/ca-certificates/tls.crt
+            - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
+              value: /usr/local/share/ca-certificates/tls.key
+            {{- end }}
+          envFrom:
+            - secretRef:
+                name: database-credentials
           volumeMounts:
-          - name: "config"
-            mountPath: "/app/appsettings.json"
-            subPath: "appsettings.json"
-          - name: "identity-data"
-            mountPath: "/app/identitydata.json"
-            subPath: "identitydata.json"
-          - name: "identity-serverdata"
-            mountPath: "/app/identityserverdata.json"
-            subPath: "identityserverdata.json"
-          - name: "serilog"
-            mountPath: "/app/serilog.json"
-            subPath: "serilog.json"
+            - name: "config"
+              mountPath: "/app/appsettings.json"
+              subPath: "appsettings.json"
+              readOnly: true
+            - name: "identity-data"
+              mountPath: "/app/identitydata.json"
+              subPath: "identitydata.json"
+              readOnly: true
+            - name: "identity-serverdata"
+              mountPath: "/app/identityserverdata.json"
+              subPath: "identityserverdata.json"
+              readOnly: true
+            - name: "serilog"
+              mountPath: "/app/serilog.json"
+              subPath: "serilog.json"
+              readOnly: true
+            {{- if .Values.admin.ssl.enabled }}
+            - name: certs
+              mountPath: /usr/local/share/ca-certificates/ca.crt
+              subPath: ca.crt
+              readOnly: true
+            - name: certs
+              mountPath: /usr/local/share/ca-certificates/tls.crt
+              subPath: tls.crt
+              readOnly: true
+            - name: certs
+              mountPath: /usr/local/share/ca-certificates/tls.key
+              subPath: tls.key
+              readOnly: true
+            {{- end }}
+          {{- if .Values.admin.ssl.enabled }}
+          ports:
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: https
+              scheme: HTTPS
+          readinessProbe:
+            httpGet:
+              path: /
+              port: https
+              scheme: HTTPS
+          {{- else }}
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+          {{- end }}
           resources:
             {{- toYaml .Values.admin.resources | nindent 12 }}
       dnsPolicy: ClusterFirstWithHostNet
@@ -80,6 +130,18 @@ spec:
         - name: "serilog"
           configMap:
             name: "{{ include "identityserver4admin.fullname" . }}-serilog"
+        {{- if .Values.admin.ssl.enabled }}
+        - name: "certs"
+          secret:
+            secretName: {{ .Values.admin.ssl.secretName }}
+            items:
+            - key: ca.crt
+              path: ca.crt
+            - key: tls.crt
+              path: tls.crt
+            - key: tls.key
+              path: tls.key
+        {{- end }}
       {{- with .Values.admin.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
