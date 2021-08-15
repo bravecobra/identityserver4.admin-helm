@@ -90,12 +90,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: https
               scheme: HTTPS
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: https
               scheme: HTTPS
           {{- else }}
@@ -105,12 +105,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: http
               scheme: HTTP
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: http
               scheme: HTTP
           {{- end }}

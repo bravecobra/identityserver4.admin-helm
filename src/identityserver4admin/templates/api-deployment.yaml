@@ -82,12 +82,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /swagger/
+              path: /health
               port: https
               scheme: HTTPS
           readinessProbe:
             httpGet:
-              path: /swagger/
+              path: /health
               port: https
               scheme: HTTPS
           {{- else }}
@@ -97,12 +97,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /swagger/
+              path: /health
               port: http
               scheme: HTTP
           readinessProbe:
             httpGet:
-              path: /swagger/
+              path: /health
               port: http
               scheme: HTTP
           {{- end }}
